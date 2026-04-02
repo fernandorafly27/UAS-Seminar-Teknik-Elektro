@@ -9,5 +9,6 @@ new class extends Component
 ?>
 
 <div>
-    {{-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger --}}
+    Dashboard Admin
+    {{-- Act only according to that maxim whereby you can, at the same time, will that it should become a universal law. - Immanuel Kant --}}
 </div>

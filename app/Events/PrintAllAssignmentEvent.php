@@ -36,7 +36,6 @@ class PrintAllAssignmentEvent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        // FIX: Menggunakan channel publik yang sederhana
         return [
             new Channel('print-channel'),
         ];

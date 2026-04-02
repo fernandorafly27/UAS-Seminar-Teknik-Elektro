@@ -15,12 +15,6 @@
             font-size: 12px;
         }
 
-        /* Pengaturan halaman untuk pencetakan/PDF */
-        @page {
-            size: A4 landscape; /* Atur ukuran kertas ke A4 dengan orientasi landscape */
-            margin: 20px; /* Beri margin 20px di semua sisi */
-        }
-
         /* Styling dasar untuk tabel */
         table {
             width: 100%;
@@ -28,18 +22,14 @@
         }
 
         /* Memastikan header tabel muncul di setiap halaman baru saat dicetak */
-        /* Header ini mungkin tidak akan berulang karena penggunaan rowspan, sesuai permintaan */
         thead {
             display: table-header-group;
         }
 
         /* Perbaikan untuk memastikan border tabel tidak terpotong saat pindah halaman (page break) */
-        /* --- FIX: Border di Page Break --- */
-        /* Terapkan border bawah pada setiap baris untuk memastikan tabel tertutup di akhir halaman */
         tr {
             border-bottom: 1px solid #e2e8f0; /* a light gray, sesuaikan dengan warna border Anda */
         }
-        /* --- END FIX --- */
 
         /* Aturan khusus untuk media cetak */
         @media print {
@@ -65,11 +55,11 @@
             <th class="border border-gray-400 px-2 py-2">Kode</th>
             <th class="border border-gray-400 px-2 py-2">Mata Kuliah</th>
             <th class="border border-gray-400 px-2 py-2">SKS</th>
-            <th class="border border-gray-400 px-2 py-2">Kelas</th>
+            <th class="border border-gray-400  w-1/12 px-2 py-2">Kelas</th>
             <th class="border border-gray-400 px-2 py-2">Sem</th>
             <th class="border border-gray-400 px-2 py-2">Hari</th>
             <th class="border border-gray-400 px-2 py-2">Waktu</th>
-            <th class="border border-gray-400 px-2 py-2">Ruang</th>
+            <th class="border border-gray-400 w-1/12 px-2 py-2">Ruang</th>
         </tr>
         </thead>
         <tbody>
@@ -101,11 +91,11 @@
                     @endif
 
                     {{-- Kolom-kolom ini berisi detail untuk setiap jadwal dan akan di-render untuk setiap jadwal dalam loop --}}
-                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->code }}</td>
-                    <td class="border border-gray-400 px-2 py-2">{{ $schedule->subject }}</td>
-                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->credit }}</td>
+                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->subject->code ?? '-'}}</td>
+                    <td class="border border-gray-400 px-2 py-2">{{ $schedule->subject->name ?? '-' }}</td>
+                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->subject->credit ?? '-' }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->student }}</td>
-                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->semester }}</td>
+                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->subject->semester ?? '-' }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->day }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center text-xs whitespace-nowrap">
                         {{ \Carbon\Carbon::parse($schedule->start)->format('H:i') }} -

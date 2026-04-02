@@ -8,7 +8,7 @@ services:
                 WWWUSER: ${WWWUSER}
                 WWWGROUP: ${WWWGROUP}
         restart: always
-        container_name: st-app
+        container_name: webdev-app
         working_dir: /var/www
         ports:
             - "8000:8000"
@@ -25,7 +25,7 @@ services:
 
     nginx:
         image: nginx:alpine
-        container_name: st-nginx
+        container_name: webdev-nginx
         restart: always
         ports:
             - "80:80"
@@ -40,7 +40,7 @@ services:
     # --- BAGIAN INI DIUBAH DARI POSTGRES KE MYSQL ---
     mysql:
         image: mysql:8.0
-        container_name: st-mysql
+        container_name: webdev-mysql
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -59,7 +59,7 @@ services:
 
     redis:
         image: redis:alpine
-        container_name: st-redis
+        container_name: webdev-redis
         restart: always
         volumes:
             - redis_data:/data

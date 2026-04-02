@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Models\ST;
+namespace App\Models\ATJ;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subject extends Model
+class Clients extends Model
 {
     //
     use HasFactory;
     protected $fillable = [];
     protected $guarded = [];
-    protected $table = 'st_subject';
+    protected $table = 'atj_clients';
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
 }

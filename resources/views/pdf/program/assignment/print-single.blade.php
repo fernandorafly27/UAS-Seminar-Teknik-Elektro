@@ -62,8 +62,8 @@
                         </td>
                     @endif
 
-                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->code }}</td>
-                    <td class="border border-gray-400 px-2 py-2">{{ $schedule->subject }}</td>
+                    <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->subject->code }}</td>
+                    <td class="border border-gray-400 px-2 py-2">{{ $schedule->subject->name }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->credit }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->student }}</td>
                     <td class="border border-gray-400 px-2 py-2 text-center">{{ $schedule->semester }}</td>
