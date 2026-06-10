@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -8,6 +9,7 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Playfair Display', 'Instrument Sans', ui-serif, Georgia, serif;
 }
 
 
@@ -19,7 +21,43 @@
 
 /** daisyUI */
 @plugin "daisyui" {
-    themes: light --default, dark --prefersdark;
+    themes: false;
+}
+
+@plugin "daisyui/theme" {
+    name: "agrovision";
+    default: true;
+    prefersdark: false;
+    color-scheme: light;
+
+    --color-base-100: oklch(98% 0.012 134);
+    --color-base-200: oklch(95% 0.022 136);
+    --color-base-300: oklch(90% 0.03 138);
+    --color-base-content: oklch(30% 0.04 150);
+    --color-primary: oklch(49% 0.11 149);
+    --color-primary-content: oklch(98% 0.015 134);
+    --color-secondary: oklch(68% 0.05 96);
+    --color-secondary-content: oklch(24% 0.03 112);
+    --color-accent: oklch(63% 0.08 171);
+    --color-accent-content: oklch(98% 0.015 170);
+    --color-neutral: oklch(36% 0.03 154);
+    --color-neutral-content: oklch(96% 0.01 140);
+    --color-info: oklch(63% 0.08 219);
+    --color-info-content: oklch(97% 0.01 215);
+    --color-success: oklch(59% 0.1 147);
+    --color-success-content: oklch(98% 0.01 142);
+    --color-warning: oklch(72% 0.11 84);
+    --color-warning-content: oklch(28% 0.04 78);
+    --color-error: oklch(60% 0.18 26);
+    --color-error-content: oklch(98% 0.01 26);
+    --radius-selector: 1rem;
+    --radius-field: 1rem;
+    --radius-box: 1.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
 }
 
 /* maryUI */
@@ -39,4 +77,367 @@
 
 .mary-table-pagination button {
     @apply cursor-pointer
+}
+
+:root {
+    --page-glow:
+        radial-gradient(circle at top left, color-mix(in oklab, var(--color-secondary) 32%, transparent), transparent 34%),
+        radial-gradient(circle at top right, color-mix(in oklab, var(--color-primary) 22%, transparent), transparent 28%),
+        linear-gradient(180deg, #f8fbf4 0%, #eef5eb 52%, #e7f0e2 100%);
+    --panel-border: color-mix(in oklab, var(--color-base-content) 10%, white 60%);
+    --panel-shadow: 0 24px 80px rgba(52, 87, 61, 0.08);
+}
+
+html {
+    background: #eef5eb;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--page-glow);
+    color: var(--color-base-content);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.45), transparent 30%),
+        radial-gradient(circle at 20% 20%, rgba(115, 149, 110, 0.1), transparent 16%),
+        radial-gradient(circle at 80% 12%, rgba(181, 200, 150, 0.16), transparent 22%);
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.28) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent 92%);
+    z-index: -1;
+}
+
+.app-shell {
+    position: relative;
+    padding: 1rem;
+}
+
+.app-sidebar {
+    border: 1px solid var(--panel-border);
+    background: linear-gradient(180deg, rgba(252, 255, 250, 0.92), rgba(240, 248, 236, 0.84));
+    backdrop-filter: blur(18px);
+    box-shadow: var(--panel-shadow);
+    animation: soft-slide-in 420ms ease-out both;
+}
+
+.app-content {
+    padding: 0.5rem 0 2rem;
+    animation: page-rise-in 460ms ease-out both;
+}
+
+.plant-card {
+    border: 1px solid var(--panel-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(248, 251, 245, 0.78));
+    backdrop-filter: blur(16px);
+    box-shadow: var(--panel-shadow);
+}
+
+.app-content .plant-card {
+    transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease,
+        background 220ms ease;
+}
+
+.app-content .plant-card:hover,
+.app-content .plant-card:focus-within {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 28px 90px rgba(52, 87, 61, 0.13);
+    border-color: color-mix(in oklab, var(--color-primary) 18%, white 62%);
+}
+
+.plant-badge {
+    border: 1px solid color-mix(in oklab, var(--color-primary) 18%, white 72%);
+    background: rgba(255, 255, 255, 0.7);
+    color: var(--color-primary);
+}
+
+.leaf-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(10px);
+    opacity: 0.9;
+    z-index: 0;
+}
+
+.leaf-orb.is-one {
+    top: -2.5rem;
+    right: 3rem;
+    height: 9rem;
+    width: 9rem;
+    background: radial-gradient(circle at 30% 30%, rgba(198, 222, 185, 0.92), rgba(123, 169, 122, 0.08) 72%);
+}
+
+.leaf-orb.is-two {
+    bottom: 1rem;
+    left: -2rem;
+    height: 7rem;
+    width: 7rem;
+    background: radial-gradient(circle at 30% 30%, rgba(230, 239, 205, 0.9), rgba(130, 179, 143, 0.08) 70%);
+}
+
+.page-title {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+}
+
+.auth-page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    animation: page-rise-in 520ms ease-out both;
+}
+
+.auth-page::before,
+.auth-page::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(152, 190, 140, 0.26), transparent 66%);
+    filter: blur(8px);
+}
+
+.auth-page::before {
+    top: -4rem;
+    left: -1rem;
+    width: 16rem;
+    height: 16rem;
+}
+
+.auth-page::after {
+    right: -3rem;
+    bottom: -5rem;
+    width: 20rem;
+    height: 20rem;
+}
+
+.auth-panel {
+    position: relative;
+    z-index: 1;
+}
+
+.auth-copy {
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-copy::before {
+    content: "";
+    position: absolute;
+    inset: auto auto -3rem -3rem;
+    width: 12rem;
+    height: 12rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(126, 174, 122, 0.24), transparent 72%);
+}
+
+.metric-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -1.5rem -2rem auto;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(171, 210, 175, 0.24), transparent 72%);
+}
+
+.status-pill {
+    border: 1px solid rgba(94, 146, 96, 0.16);
+    background: rgba(252, 255, 250, 0.74);
+    backdrop-filter: blur(14px);
+}
+
+.soft-divider {
+    border-color: color-mix(in oklab, var(--color-base-content) 12%, white 80%);
+}
+
+.dashboard-surface .menu {
+    gap: 0.35rem;
+}
+
+.dashboard-surface .menu li > *:not(ul, details, .menu-title),
+.dashboard-surface .menu li > details > summary {
+    border-radius: 1rem;
+}
+
+.dashboard-surface .menu li > *:not(ul, details, .menu-title):hover,
+.dashboard-surface .menu li > details > summary:hover {
+    background: rgba(118, 152, 115, 0.08);
+}
+
+.dashboard-surface .menu :where(li > .active, li > *:active) {
+    background: linear-gradient(90deg, rgba(123, 159, 120, 0.16), rgba(193, 214, 171, 0.16));
+    color: var(--color-primary);
+}
+
+.dashboard-surface .btn-primary {
+    border-color: transparent;
+    box-shadow: 0 14px 30px rgba(81, 123, 83, 0.18);
+}
+
+.dashboard-surface .input,
+.dashboard-surface .toggle,
+.dashboard-surface .btn,
+.dashboard-surface .card {
+    border-radius: 1rem;
+}
+
+.auth-copy,
+.auth-panel {
+    animation: soft-slide-in 560ms ease-out both;
+}
+
+.auth-panel {
+    animation-delay: 90ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card {
+    animation: card-pop-in 420ms ease-out both;
+}
+
+.app-content > * > .plant-card,
+.app-content > .plant-card,
+.app-content .grid > .plant-card,
+.app-content .grid > .card {
+    animation: box-enter-in 440ms ease-out both;
+}
+
+.app-content .grid > .plant-card:nth-child(2),
+.app-content .grid > .card:nth-child(2) {
+    animation-delay: 55ms;
+}
+
+.app-content .grid > .plant-card:nth-child(3),
+.app-content .grid > .card:nth-child(3) {
+    animation-delay: 110ms;
+}
+
+.app-content .grid > .plant-card:nth-child(4),
+.app-content .grid > .card:nth-child(4) {
+    animation-delay: 165ms;
+}
+
+.app-content .grid > .plant-card:nth-child(5),
+.app-content .grid > .card:nth-child(5) {
+    animation-delay: 220ms;
+}
+
+.app-content .grid > .plant-card:nth-child(6),
+.app-content .grid > .card:nth-child(6) {
+    animation-delay: 275ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card:nth-child(2) {
+    animation-delay: 45ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card:nth-child(3) {
+    animation-delay: 90ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card:nth-child(4) {
+    animation-delay: 135ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card:nth-child(5) {
+    animation-delay: 180ms;
+}
+
+.monitoring-dashboard > .grid:first-of-type > .card:nth-child(6) {
+    animation-delay: 225ms;
+}
+
+@keyframes page-rise-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes soft-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes card-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes box-enter-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app-sidebar,
+    .app-content,
+    .auth-page,
+    .auth-copy,
+    .auth-panel,
+    .app-content > * > .plant-card,
+    .app-content > .plant-card,
+    .app-content .grid > .plant-card,
+    .app-content .grid > .card,
+    .monitoring-dashboard > .grid:first-of-type > .card {
+        animation: none;
+    }
+
+    .app-content .plant-card {
+        transition: none;
+    }
+
+    .app-content .plant-card:hover,
+    .app-content .plant-card:focus-within {
+        transform: none;
+    }
 }

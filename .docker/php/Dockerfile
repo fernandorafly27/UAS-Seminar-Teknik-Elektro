@@ -1,7 +1,6 @@
 # --- STAGE: BASE ---
 FROM php:8.4-fpm AS base
 
-ENV NODE_VERSION=22.0.0
 ARG WWWUSER=1000
 ARG WWWGROUP=1000
 
@@ -34,12 +33,12 @@ RUN apt-get update && apt-get install -y \
 # This replaces raw pecl commands and manually installing libraries
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions && \
-    install-php-extensions gd pdo pdo_mysql opcache bcmath sockets pcntl zip redis
+    install-php-extensions gd pdo pdo_mysql opcache bcmath sockets pcntl zip
 
 # 3. Install Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
-    && npm install -g npm
+    && rm -rf /var/lib/apt/lists/*
 
 # 4. Setup Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -55,8 +54,8 @@ COPY .docker/php/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # 6. Setup User
-RUN groupmod -g ${WWWGROUP} www-data && \
-    usermod -u ${WWWUSER} -g ${WWWGROUP} www-data
+RUN groupmod -g ${WWWGROUP:-1000} www-data && \
+    usermod -u ${WWWUSER:-1000} -g ${WWWGROUP:-1000} www-data
 
 ENTRYPOINT ["/entrypoint.sh"]
 

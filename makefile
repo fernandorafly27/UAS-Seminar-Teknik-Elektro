@@ -1,16 +1,18 @@
 # Define container names
 APP_CONTAINER=app
 NGINX_CONTAINER=nginx
-POSTGRES_CONTAINER=postgres
+MYSQL_CONTAINER=mysql
 REDIS_CONTAINER=redis
 
 # Define dev override file
 DEV_COMPOSE=docker-compose.override.yml
 
-# Extract PostgreSQL credentials from .env file
-POSTGRES_DB=$(shell grep DB_DATABASE .env | cut -d '=' -f2)
-POSTGRES_USER=$(shell grep DB_USERNAME .env | cut -d '=' -f2)
-POSTGRES_PASSWORD=$(shell grep DB_PASSWORD .env | cut -d '=' -f2)
+# Extract MySQL credentials from .env file
+MYSQL_DB=$(shell grep DB_DATABASE .env | cut -d '=' -f2)
+MYSQL_USER=$(shell grep DB_USERNAME .env | cut -d '=' -f2)
+MYSQL_PASSWORD=$(shell grep DB_PASSWORD .env | cut -d '=' -f2)
+
+DOCKER_COMPOSE=docker compose
 
 .PHONY: help up prod stop down restart restart-container stop-container artisan composer npm logs bash psql redis test
 
@@ -48,8 +50,8 @@ help:
 	@echo "📜  Logs:"
 	@echo "  make logs <container> - View logs of a specific container"
 	@echo ""
-	@echo "🐘  PostgreSQL CLI:"
-	@echo "  make psql           - Open psql shell with credentials from .env"
+	@echo "🐬  MySQL CLI:"
+	@echo "  make mysql          - Open mysql shell with credentials from .env"
 	@echo ""
 	@echo "🔥  Redis CLI:"
 	@echo "  make redis          - Open redis-cli inside the Redis container"
@@ -57,67 +59,67 @@ help:
 
 ## 💻 Start the DEV environment (with override)
 up:
-	docker-compose -f docker-compose.yml -f $(DEV_COMPOSE) up -d
+	$(DOCKER_COMPOSE) -f docker-compose.yml -f $(DEV_COMPOSE) up -d
 
 ## 💻 Start the PROD environment (without override)
 prod:
-	docker-compose -f docker-compose.yml up -d
+	$(DOCKER_COMPOSE) -f docker-compose.yml up -d
 
 ## 🛑 Stop all running containers
 stop:
-	docker-compose stop
+	$(DOCKER_COMPOSE) stop
 
 ## 🗑 Remove all containers and volumes
 down:
-	docker-compose down -v
+	$(DOCKER_COMPOSE) down -v
 
 ## 🔄 Restart all containers
 restart:
-	docker-compose restart
+	$(DOCKER_COMPOSE) restart
 
 ## 🔄 Restart a specific container (usage: make restart-container CONTAINER=nginx)
 restart-container:
-	docker-compose restart $(CONTAINER)
+	$(DOCKER_COMPOSE) restart $(CONTAINER)
 
 ## 🛑 Stop a specific container (usage: make stop-container CONTAINER=postgres)
 stop-container:
-	docker-compose stop $(CONTAINER)
+	$(DOCKER_COMPOSE) stop $(CONTAINER)
 
 ## 🎭 Run PHP inside the app container (usage: make php -v)
 php:
-	docker-compose exec -u www-data $(APP_CONTAINER) php $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) php $(filter-out $@,$(MAKECMDGOALS))
 
 ## 🎭 Run an Artisan command (usage: make artisan migrate)
 artisan:
-	docker-compose exec -u www-data $(APP_CONTAINER) php artisan $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) php artisan $(filter-out $@,$(MAKECMDGOALS))
 
 ## 🎼 Run a Composer command (usage: make composer install)
 composer:
-	docker-compose exec -u www-data $(APP_CONTAINER) composer $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) composer $(filter-out $@,$(MAKECMDGOALS))
 
 ## 🎸 Run an NPM command (usage: make npm run dev)
 npm:
-	docker-compose exec -u www-data $(APP_CONTAINER) npm $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) npm $(filter-out $@,$(MAKECMDGOALS))
 
 ## 🖥 Open a bash shell inside the app container
 bash:
-	docker-compose exec -u www-data $(APP_CONTAINER) bash
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) bash
 
 ## 📜 View logs of a specific container (usage: make logs nginx)
 logs:
-	docker-compose logs -f $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE) logs -f $(filter-out $@,$(MAKECMDGOALS))
 
-## 🐘 Open PostgreSQL shell with credentials from .env
-psql:
-	docker-compose exec -e PGPASSWORD=$(POSTGRES_PASSWORD) $(POSTGRES_CONTAINER) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+## 🐬 Open MySQL shell with credentials from .env
+mysql:
+	$(DOCKER_COMPOSE) exec $(MYSQL_CONTAINER) mysql -u$(MYSQL_USER) -p$(MYSQL_PASSWORD) $(MYSQL_DB)
 
 ## 🔥 Open Redis CLI inside the Redis container
 redis:
-	docker-compose exec $(REDIS_CONTAINER) redis-cli
+	$(DOCKER_COMPOSE) exec $(REDIS_CONTAINER) redis-cli
 
 ## 🧪 Run PHPUnit tests
 test:
-	docker-compose exec -u www-data $(APP_CONTAINER) php artisan test
+	$(DOCKER_COMPOSE) exec -u www-data $(APP_CONTAINER) php artisan test
 
 ## Fix for make to avoid creating unnecessary files
 %:

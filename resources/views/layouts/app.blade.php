@@ -8,10 +8,10 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen font-sans antialiased bg-base-200">
+<body class="dashboard-surface min-h-screen font-sans antialiased">
 
     {{-- NAVBAR mobile only --}}
-    <x-nav sticky class="lg:hidden">
+    <x-nav sticky class="plant-card mx-4 mt-4 rounded-[1.5rem] border-0 lg:hidden">
         <x-slot:brand>
             <x-app-brand />
         </x-slot:brand>
@@ -23,44 +23,30 @@
     </x-nav>
 
     {{-- MAIN --}}
-    <x-main>
+    <x-main class="app-shell">
         {{-- SIDEBAR --}}
-        <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
+        <x-slot:sidebar drawer="main-drawer" collapsible class="app-sidebar rounded-[1.75rem] p-3 lg:min-h-[calc(100vh-2rem)]">
 
             {{-- BRAND --}}
-            <x-app-brand class="px-5 pt-4" />
+            <x-app-brand class="px-4 pt-4" />
 
             {{-- MENU --}}
-            <x-menu activate-by-route>
+            <x-menu activate-by-route class="px-2 pb-3">
 
-                {{-- User --}}
-                @if($user = auth()->user())
-                    <x-menu-separator />
-
-                    <x-list-item :item="$user" value="name" sub-value="email" no-separator no-hover class="-mx-2 !-my-2 rounded">
-                        <x-slot:actions>
-                            <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" no-wire-navigate link="/logout" />
-                        </x-slot:actions>
-                    </x-list-item>
-
-                    <x-menu-separator />
-                @endif
-
-                <x-menu-item title="Home" icon="o-sparkles" link="/" />
-
-                @role('admin')
-                <x-menu-separator />
-                <x-menu-item title="Client" icon="o-sparkles" link="/admin/client" />
-
-                @endrole
-
+                <x-menu-item title="Home" icon="o-sparkles" link="/admin/dashboard" />
+                <x-menu-item title="Monitoring" icon="o-chart-bar" link="/monitoring" />
+                <x-menu-item title="Data Tanaman" icon="o-clipboard-document-list" link="/data-tanaman" />
+                <x-menu-item title="Help" icon="o-question-mark-circle" link="/help" />
+                <x-menu-item title="Exit" icon="o-arrow-right-on-rectangle" link="/logout" no-wire-navigate />
 
             </x-menu>
         </x-slot:sidebar>
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
-            {{ $slot }}
+            <div class="app-content">
+                {{ $slot }}
+            </div>
         </x-slot:content>
     </x-main>
 

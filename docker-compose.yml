@@ -43,7 +43,7 @@ services:
         container_name: webdev-mysql
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
             MYSQL_ROOT_HOST: "%"
             MYSQL_DATABASE: ${DB_DATABASE}
             # Jika user di .env bukan root, baris di bawah ini akan membuat user baru
@@ -66,9 +66,24 @@ services:
         networks:
             - WebFPTE
 
+    mosquitto:
+        image: eclipse-mosquitto:2
+        container_name: webdev-mosquitto
+        restart: always
+        ports:
+            - "1883:1883"
+        volumes:
+            - .docker/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+            - mosquitto_data:/mosquitto/data
+            - mosquitto_log:/mosquitto/log
+        networks:
+            - WebFPTE
+
 volumes:
     mysql_data: # <--- UBAH DARI pg_data KE mysql_data
     redis_data:
+    mosquitto_data:
+    mosquitto_log:
 
 networks:
     WebFPTE:

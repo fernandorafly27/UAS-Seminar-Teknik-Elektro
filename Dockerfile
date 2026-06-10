@@ -30,9 +30,8 @@ RUN docker-php-ext-install pdo pdo_mysql mbstring xml zip
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Node.js LTS (misal versi 20.x)
-# Tambahkan setelah baris RUN apt-get update ...
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+# Install Node.js LTS (versi 20.x)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
 

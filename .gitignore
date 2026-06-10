@@ -5,8 +5,12 @@
 .env.production
 .phpactor.json
 .phpunit.result.cache
+/.cache
+/.codex
+/.config
 /.fleet
 /.idea
+/.local
 /.nova
 /.phpunit.cache
 /.vscode
@@ -14,6 +18,7 @@
 /auth.json
 /node_modules
 /public/build
+/public/build.nobody-backup-*
 /public/hot
 /public/storage
 /storage/*.key

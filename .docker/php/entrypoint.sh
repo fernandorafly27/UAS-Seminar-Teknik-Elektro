@@ -12,7 +12,6 @@ chmod -R 777 /var/www/storage /var/www/bootstrap/cache
 
 if [ ! -z "$WWWUSER" ] && [ ! -z "$WWWGROUP" ]; then
     echo "Updating www-data UID/GID to $WWWUSER:$WWWGROUP..."
-    apk add --no-cache shadow
     usermod -u "$WWWUSER" www-data
     groupmod -g "$WWWGROUP" www-data
 fi
